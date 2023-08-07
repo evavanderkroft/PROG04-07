@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Defqon.1",
+        "adress":{
+            "lat": "52.455",
+            "lon": "5.69306"
+        },
+        "genres": ["hardstyle", "hardcore", "frenchcore"]
+    },
+    {
+        "name": "Mysteryland",
+        "adress":{
+            "lat": "52.4417115",
+            "lon": " 4.9108307"
+        },
+        "genres": ["hardstyle", "house", "techno"]
+    },
+    {
+        "name": "Liquicity",
+        "adress":{
+            "lat": "52.694167",
+            "lon": " 4.745556"
+        },
+        "genres": ["drum 'n' bass"]
+    },
+    {
+        "name": "Decibel",
+        "adress":{
+            "lat": "51.4825",
+            "lon": "5.1389"
+        },
+        "genres": ["hardstyle", "hardcore", "frenchcore"]
+    },
+    {
+        "name": "ADE",
+        "adress":{
+            "lat": " 52.364942",
+            "lon": "4.888337"
+        },
+        "genres": ["house", "drum 'n' bass", "techno", "hardcore", "trance"]
+    },
+    {
+        "name": "Don't let daddy know",
+        "adress":{
+            "lat": "52.311796",
+            "lon": "4.945489"
+        },
+        "genres": ["house"]
+    },
+    {
+        "name": "Nox on the beach",
+        "adress":{
+            "lat": "51.407508",
+            "lon": "5.413712"
+        },
+        "genres": ["drum 'n' bass"]
+    }
+]
