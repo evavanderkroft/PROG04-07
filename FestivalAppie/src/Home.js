@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function Home() {
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>FESTIVAL APPIE</Text>
+      <Text style={styles.titleText}>FestivalAppie</Text>
       <Text style={styles.bodyText}>
         Welkom bij de app om je toekomste EDM festivals op te bekijken. Op deze
         app kan je zowel op de kaart kijken waar de festivals zich bevinden, als

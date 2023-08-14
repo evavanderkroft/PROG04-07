@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -5,10 +6,25 @@ import {
   SafeAreaView,
   StatusBar,
   TouchableOpacity,
+  Button,
 } from "react-native";
 
-export default function Home({ markers, navigation }) {
+import {
+  isMarkerInFavorites,
+  addToFavorites,
+  removeFromFavorites,
+} from "./helpers.js";
+
+export default function List({ markers, navigation }) {
   //rendering the flatlist. On press, go to map with that marker.
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    if (favorites.length > 0) {
+      navigation.navigate("Favorites");
+    }
+  }, [favorites]);
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => navigation.navigate("Map", { currentMarker: item })}
@@ -16,8 +32,55 @@ export default function Home({ markers, navigation }) {
     >
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.bodyText}>{item.description}</Text>
+      <Button
+        style={styles.buttonFavorites}
+        title={
+          isMarkerInFavorites(item, favorites)
+            ? "Remove from Favorites"
+            : "Add to Favorites"
+        }
+        color={isMarkerInFavorites(item, favorites) ? "red" : "green"}
+        onPress={() => handleAddToFavorites(item)}
+      />
     </TouchableOpacity>
   );
+
+  // const handleAddToFavorites = (marker) => {
+  //   console.log("Before Set Favorites:", favorites);
+
+  //   if (!isMarkerInFavorites(marker, favorites)) {
+  //     favorites.push(marker);
+  //     console.log("Updated Favorites:", favorites);
+  //     // setFavorites(updatedFavorites);
+  //     // console.log("de state is veranderd");
+  //     navigation.navigate("Favorites");
+  //   } else {
+  //     const updatedFavorites = removeFromFavorites(favorites, marker);
+  //     console.log("Updated Favorites1:", updatedFavorites);
+  //     setFavorites(updatedFavorites);
+  //   }
+  // };
+
+  const handleAddToFavorites = (marker) => {
+    if (!isMarkerInFavorites(marker, favorites)) {
+      const updatedFavorites = [...favorites, marker];
+      setFavorites(updatedFavorites);
+    } else {
+      const updatedFavorites = removeFromFavorites(favorites, marker);
+      setFavorites(updatedFavorites);
+    }
+  };
+
+  // const handleAddToFavorites = async (marker) => {
+  //   if (!isMarkerInFavorites(marker, favorites)) {
+  //     const updatedFavorites = [...favorites, marker];
+  //     await setFavorites(updatedFavorites); // Use await to ensure state update completes
+  //     navigation.navigate("Favorites");
+  //   } else {
+  //     const updatedFavorites = removeFromFavorites(favorites, marker);
+  //     setFavorites(updatedFavorites);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,5 +110,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#29292E",
     fontFamily: "Gill Sans",
+  },
+  buttonFavorites: {
+    backgroundColor: "#FFFFFF",
   },
 });
