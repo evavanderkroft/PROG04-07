@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,30 +9,35 @@ import {
   Button,
 } from "react-native";
 
-const Favorites = ({ favorites }) => {
-  //   for (const item of favorites) {
-  //     console.log("dit is het"(item));
-  //   }
-
-  console.log("Received Favorites:", favorites);
+export default function Favorites(props) {
+  useEffect(() => {
+    console.log(props.route.params.favorites);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Favorite Markers</Text>
       <FlatList
-        data={favorites}
-        renderItem={({ item }) => <Text style={styles.item}>{item.title}</Text>}
+        data={props.route.params.favorites}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate("Map", { currentMarker: item })
+            }
+          >
+            <Text style={styles.item}>{item.title}</Text>
+          </TouchableOpacity>
+        )}
       />
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
     fontFamily: "Gill Sans",
-    backgroundColor: "red",
   },
   item: {
     backgroundColor: "#9147FF",
@@ -50,5 +55,3 @@ const styles = StyleSheet.create({
     fontFamily: "Gill Sans",
   },
 });
-
-export default Favorites;

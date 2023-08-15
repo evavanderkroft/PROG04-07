@@ -98,17 +98,6 @@ export default function App() {
       }
     }
   }
-  const addToFavorites = (marker) => {
-    if (!isMarkerInFavorites(marker)) {
-      setFavorites([...favorites, marker]);
-    }
-  };
-
-  const removeFromFavorites = (marker) => {
-    setFavorites(
-      favorites.filter((favMarker) => favMarker.title !== marker.title)
-    );
-  };
 
   //main navigation
   const Tab = createBottomTabNavigator();
@@ -124,13 +113,7 @@ export default function App() {
 
         <Tab.Screen name="List">
           {(props) => (
-            <List
-              {...props}
-              markers={markers}
-              favorites={favorites}
-              addToFavorites={addToFavorites}
-              removeFromFavorites={removeFromFavorites}
-            />
+            <List {...props} markers={markers} favorites={favorites} />
           )}
         </Tab.Screen>
 
