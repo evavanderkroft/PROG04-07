@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleText: {
-    color: "#FFFFFF",
+    // color: "#FFFFFF",
     marginTop: 10,
     fontSize: 45,
     fontFamily: "Cochin",
