@@ -16,9 +16,13 @@ export default function Favorites({
   setFavorites, // Function to update favorites
   route, // Route object containing navigation parameters
   navigation, // Navigation object to control screen navigation
+  theme,
 }) {
   // Check if there are any favorites
   const [hasFavorites, setHasFavorites] = useState(favorites.length > 0);
+
+  const bodyTextColor =
+    theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
 
   // Set up an effect to update favorites when the screen receives focus
   useEffect(() => {
@@ -45,7 +49,7 @@ export default function Favorites({
   return (
     // Render the Favorites screen layout
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Favorite Markers</Text>
+      <Text style={[styles.title, bodyTextColor]}>Favorite Markers</Text>
       {hasFavorites ? (
         // Display the list of favorite markers
         <FlatList
@@ -86,6 +90,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     flexDirection: "row",
     justifyContent: "space-between",
+    borderRadius: 10,
   },
   title: {
     fontSize: 32,
@@ -106,5 +111,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Gill Sans",
     color: "#9147FF",
+  },
+
+  darkBodyText: {
+    color: "black", // Define your dark theme body text color here
+  },
+  lightBodyText: {
+    color: "white", // Define your light theme body text color here
   },
 });

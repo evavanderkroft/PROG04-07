@@ -1,0 +1,16 @@
+{
+  "welcome": "Bienvenido a FestivalAppie",
+  "description": "Bienvenido a la aplicación para ver tus próximos festivales de EDM...",
+  "favoriteMarkers": "Marcadores favoritos",
+  "noFavorites": "No tienes marcadores favoritos",
+  "selectLanguage": "Seleccionar idioma",
+  "english": "Inglés",
+  "dutch": "Holandés",
+  "spanish": "Español",
+  "home": "Home",
+  "list": "List",
+  "favorites": "Favorites",
+  "map": "Map",
+  "settings": "Settings"
+
+}

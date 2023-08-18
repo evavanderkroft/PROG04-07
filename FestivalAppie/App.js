@@ -161,6 +161,7 @@ import Map from "./src/Map.js";
 import List from "./src/List.js";
 import Settings from "./src/Settings.js";
 import Favorites from "./src/Favorites.js";
+import Review from "./src/Review.js";
 
 // Define the main App component
 export default function App() {
@@ -234,7 +235,12 @@ export default function App() {
         {/* Define screens for each tab */}
         <Tab.Screen name="Home">
           {(props) => (
-            <Home {...props} markers={markers} setMarkers={setMarkers} />
+            <Home
+              {...props}
+              markers={markers}
+              setMarkers={setMarkers}
+              theme={theme}
+            />
           )}
         </Tab.Screen>
 
@@ -255,12 +261,24 @@ export default function App() {
               {...props}
               favorites={favorites}
               setFavorites={setFavorites}
+              theme={theme}
             />
           )}
         </Tab.Screen>
 
         <Tab.Screen name="Map">
           {(props) => <Map {...props} location={location} markers={markers} />}
+        </Tab.Screen>
+
+        <Tab.Screen name="Review">
+          {(props) => (
+            <Review
+              {...props}
+              markers={markers}
+              setMarkers={setMarkers}
+              theme={theme}
+            />
+          )}
         </Tab.Screen>
 
         <Tab.Screen name="Settings">

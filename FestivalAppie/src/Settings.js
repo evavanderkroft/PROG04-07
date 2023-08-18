@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, Button, Text } from "react-native";
-import { useTranslation } from "react-i18next"; // Import useTranslation
+// import { useTranslation } from "react-i18next"; // Import useTranslation
 
 export default function Settings({ theme, setTheme }) {
-  const { t, i18n } = useTranslation(); // Initialize useTranslation
+  // const { t, i18n } = useTranslation(); // Initialize useTranslation
 
   // Variables
   const [oppositeTheme, setOppositeTheme] = useState();
@@ -26,27 +26,38 @@ export default function Settings({ theme, setTheme }) {
     }
   }
 
-  // Function to change the app's language
-  const changeLanguage = (language) => {
-    i18n.changeLanguage(language);
-  };
+  // // Function to change the app's language
+  // const changeLanguage = (language) => {
+  //   i18n.changeLanguage(language);
+  // };
 
+  const textColor = theme === "dark" ? styles.lightText : styles.darkText;
+
+  // return (
+  //   <SafeAreaView style={styles.container}>
+  //     <Button
+  //       title={`Change theme to ${oppositeTheme}`}
+  //       onPress={() => toggleSwitch(theme)}
+  //     />
+  //     {/* <Text style={styles.title}>Select Language:</Text>
+  //     <Button
+  //       title={t("english")}
+  //       onPress={() => changeLanguage("en")}
+  //       disabled={i18n.language === "en"}
+  //     />
+  //     <Button
+  //       title={t("dutch")}
+  //       onPress={() => changeLanguage("nl")}
+  //       disabled={i18n.language === "nl"}
+  //     /> */}
+  //   </SafeAreaView>
+  // );
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={[styles.title, textColor]}>Settings</Text>
       <Button
         title={`Change theme to ${oppositeTheme}`}
         onPress={() => toggleSwitch(theme)}
-      />
-      <Text style={styles.title}>Select Language:</Text>
-      <Button
-        title={t("english")}
-        onPress={() => changeLanguage("en")}
-        disabled={i18n.language === "en"}
-      />
-      <Button
-        title={t("dutch")}
-        onPress={() => changeLanguage("nl")}
-        disabled={i18n.language === "nl"}
       />
     </SafeAreaView>
   );
@@ -61,5 +72,11 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 20,
+  },
+  darkText: {
+    color: "black", // Define your dark theme text color here
+  },
+  lightText: {
+    color: "#9147FF", // Define your light theme text color here
   },
 });
