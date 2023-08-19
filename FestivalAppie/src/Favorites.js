@@ -1,4 +1,4 @@
-// Import necessary components from React and React Native
+// Importeer de nodige componenten van React en React Native
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -10,23 +10,24 @@ import {
   View,
 } from "react-native";
 
-// Load language data from JSON files
+// Laad taalgegevens uit JSON-bestanden
 import en from "../locales/en.json";
 import nl from "../locales/nl.json";
 import es from "../locales/es.json";
 import de from "../locales/de.json";
 
-// Define the Favorites component that displays a list of favorite markers
+// Definieer de Favorites-component die een lijst met favoriete markers weergeeft
 export default function Favorites({
-  favorites, // Array of favorite markers
-  setFavorites, // Function to update favorites
-  route, // Route object containing navigation parameters
-  navigation, // Navigation object to control screen navigation
-  theme,
-  language,
+  favorites, // Array van favoriete markers
+  setFavorites, // Functie om favorieten bij te werken
+  route, // Routobject met navigatieparameters
+  navigation, // Navigatieobject om schermnavigatie te regelen
+  theme, // Themaobject om thema te veranderen
+  language, // taalobject voor als de taal veranderd
 }) {
-  // Check if there are any favorites
+  // Controleer of er favorieten zijn
   const [hasFavorites, setHasFavorites] = useState(favorites.length > 0);
+  // Laad vertalingen op basis van de geselecteerde taal
   const translations = {
     en,
     nl,
@@ -38,40 +39,41 @@ export default function Favorites({
   const bodyTextColor =
     theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
 
-  // Set up an effect to update favorites when the screen receives focus
+  // Stel een effect in om favorieten bij te werken wanneer het scherm de focus krijgt
   useEffect(() => {
     const focusListener = navigation.addListener(
       "focus",
       () => {
-        // Update favorites when new favorites are passed through route parameters
+        // Werk favorieten bij wanneer er nieuwe favorieten worden doorgegeven via routeparameters
         if (route.params && route.params.favorites) {
           setFavorites(route.params.favorites);
           setHasFavorites(route.params.favorites.length > 0);
         } else {
-          console.log("empty");
+          console.log("leeg");
         }
       },
       [route.params]
     );
 
-    // Clean up the focus listener when the component unmounts
+    // Ruim de focusluisteraar op wanneer de component wordt verwijderd
     return () => {
       focusListener();
     };
   }, [navigation, route.params]);
 
   return (
-    // Render the Favorites screen layout
+    // Render de lay-out van het Favorites-scherm
     <SafeAreaView style={styles.container}>
+      {/* Toon de titel van favoriete markers */}
       <Text style={[styles.title, bodyTextColor]}>
         {translatedText.favoriteMarkers}
       </Text>
       {hasFavorites ? (
-        // Display the list of favorite markers
+        // Toon de lijst met favoriete markers
         <FlatList
           data={favorites}
           renderItem={({ item }) => (
-            // Make each favorite marker clickable to navigate to the map
+            // Maak elke favoriete marker klikbaar om naar de kaart te navigeren
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate(translatedText.map, { currentMarker: item })
@@ -84,14 +86,14 @@ export default function Favorites({
           )}
         />
       ) : (
-        // Display a message when there are no favorite markers
+        // Toon een bericht wanneer er geen favoriete markers zijn
         <Text style={styles.NoFavsText}>{translatedText.noFavorites}</Text>
       )}
     </SafeAreaView>
   );
 }
 
-// Define styles for the components
+// Definieer stijlen voor de componenten
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -130,9 +132,9 @@ const styles = StyleSheet.create({
   },
 
   darkBodyText: {
-    color: "black", // Define your dark theme body text color here
+    color: "black", // Definieer hier de kleur van de donkere thematekst
   },
   lightBodyText: {
-    color: "white", // Define your light theme body text color here
+    color: "white", // Definieer hier de kleur van de lichte thematekst
   },
 });

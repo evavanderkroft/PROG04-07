@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-// Load language data from JSON files
+// Laad taalgegevens uit JSON-bestanden
 import en from "../locales/en.json";
 import nl from "../locales/nl.json";
 import es from "../locales/es.json";
 import de from "../locales/de.json";
 
 export default function Home({ theme, language }) {
-  // Load translations based on selected language
+  // Laad vertalingen op basis van geselecteerde taal
   const translations = {
     en,
     nl,
@@ -16,13 +16,18 @@ export default function Home({ theme, language }) {
     de,
   };
 
+  // Haal vertaalde tekst op op basis van geselecteerde taal
   const translatedText = translations[language];
+
+  // Bepaal de kleur van de lichaamstekst op basis van het thema
   const bodyTextColor =
     theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
 
   return (
     <View style={styles.container}>
+      {/* Toon de vertaalde welkomsttekst */}
       <Text style={[styles.titleText]}>{translatedText.welcome}</Text>
+      {/* Toon de vertaalde beschrijvingstekst */}
       <Text style={[styles.bodyText, bodyTextColor]}>
         {translatedText.description}
       </Text>
@@ -34,12 +39,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    // width: "90%",
     justifyContent: "center",
   },
   titleText: {
-    textAlign: "center", // Center the text horizontally
-    textAlignVertical: "center", // Center the text vertically
+    textAlign: "center",
+    textAlignVertical: "center",
     marginTop: 10,
     fontSize: 60,
     fontFamily: "Cochin",
@@ -54,9 +58,9 @@ const styles = StyleSheet.create({
   },
 
   darkBodyText: {
-    color: "black", // Define your dark theme body text color here
+    color: "black",
   },
   lightBodyText: {
-    color: "white", // Define your light theme body text color here
+    color: "white",
   },
 });

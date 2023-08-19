@@ -1,4 +1,4 @@
-// Import necessary libraries and components
+// Importeer de benodigde bibliotheken en componenten
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import {
@@ -8,13 +8,13 @@ import {
 } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-// Load language data from JSON files
+// Laad taalgegevens uit JSON-bestanden
 import en from "./locales/en.json";
 import nl from "./locales/nl.json";
 import es from "./locales/es.json";
 import de from "./locales/de.json";
 
-// Import various app screens
+// Importeer verschillende app-schermen
 import Home from "./src/Home.js";
 import Map from "./src/Map.js";
 import List from "./src/List.js";
@@ -22,17 +22,17 @@ import Settings from "./src/Settings.js";
 import Favorites from "./src/Favorites.js";
 import Review from "./src/Review.js";
 
-// Define the main App component
+// Definieer de hoofd-App-component
 export default function App() {
-  // Define state variables for the app
-  const [markers, setMarkers] = useState([]); // Array of markers on the map
-  const [location, setLocation] = useState(null); // Current device location
-  const [errorMsg, setErrorMsg] = useState(null); // Error message for location permission
-  const [data, setData] = useState(null); // Data fetched from API
-  const [theme, setTheme] = useState("light"); // App theme (light or dark)
-  const [favorites, setFavorites] = useState([]); // Array of favorite markers
-  const [language, setLanguage] = useState("en"); // Initialize language state
-  // Load translations based on selected language
+  // Definieer de statusvariabelen voor de app
+  const [markers, setMarkers] = useState([]); // Array van markeringen op de kaart
+  const [location, setLocation] = useState(null); // Huidige apparaatlocatie
+  const [errorMsg, setErrorMsg] = useState(null); // Foutmelding voor locatietoestemming
+  const [data, setData] = useState(null); // Gegevens opgehaald van API
+  const [theme, setTheme] = useState("light"); // App-thema (licht of donker)
+  const [favorites, setFavorites] = useState([]); // Array van favoriete markeringen
+  const [language, setLanguage] = useState("en"); // Initialiseer taalstaat
+  // Laad vertalingen op basis van geselecteerde taal
   const translations = {
     en,
     nl,
@@ -41,29 +41,29 @@ export default function App() {
   };
 
   const translatedText = translations[language];
-  // Set up an effect to check for location permission and fetch initial data
+  // Stel een effect in om locatietoestemming te controleren en initiële gegevens op te halen
   useEffect(() => {
     (async () => {
-      // Request foreground location permissions
+      // Vraag voorgrond locatietoestemming op
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        setErrorMsg("Toestemming voor toegang tot locatie geweigerd");
         return;
       }
-      // Get the current device location
+      // Haal huidige apparaatlocatie op
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      // Fetch data from API
+      // Haal gegevens op van API
       getData();
     })();
   }, []);
 
-  // Display an alert if there is an error message
+  // Toon een waarschuwing als er een foutmelding is
   if (errorMsg) {
     alert(errorMsg);
   }
 
-  // Function to fetch data from API
+  // Functie om gegevens op te halen van API
   function getData() {
     fetch(`https://evavanderkroft.nl/festivalAppie/festivals.json`)
       .then((res) => res.json())
@@ -74,7 +74,7 @@ export default function App() {
       .catch((err) => console.log(err));
   }
 
-  // Function to initialize markers from fetched data
+  // Functie om markeringen te initialiseren op basis van opgehaalde gegevens
   function initMarkers(data) {
     for (const single of data) {
       if (Array.isArray(single.genres)) {
@@ -94,12 +94,12 @@ export default function App() {
     }
   }
 
-  // Create a bottom tab navigator for main app navigation
+  // Maak een bottom tab navigator voor de hoofdnavigatie van de app
   const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer theme={theme === "dark" ? DarkTheme : DefaultTheme}>
       <Tab.Navigator>
-        {/* Define screens for each tab */}
+        {/* Definieer schermen voor elk tabblad */}
         <Tab.Screen name={translatedText.home}>
           {(props) => (
             <Home
@@ -164,6 +164,7 @@ export default function App() {
               setTheme={setTheme}
               language={language}
               setLanguage={setLanguage}
+              favorites={favorites}
             />
           )}
         </Tab.Screen>

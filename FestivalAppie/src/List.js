@@ -1,4 +1,4 @@
-// Import necessary components from React and React Native
+// Importeer de benodigde onderdelen van React en React Native
 import React, { useEffect } from "react";
 import {
   StyleSheet,
@@ -10,13 +10,13 @@ import {
   Button,
 } from "react-native";
 
-// Load language data from JSON files
+// Laad taalgegevens uit JSON-bestanden
 import en from "../locales/en.json";
 import nl from "../locales/nl.json";
 import es from "../locales/es.json";
 import de from "../locales/de.json";
 
-// Define the List component that displays a list of markers
+// Definieer het List-component dat een lijst met markers weergeeft
 export default function List({
   markers,
   navigation,
@@ -33,37 +33,33 @@ export default function List({
 
   const translatedText = translations[language];
 
-  // Set up an effect to navigate to the Favorites screen when favorites change
-  useEffect(() => {
-    if (favorites.length > 0) {
-      navigation.navigate(translatedText.favorites, { favorites });
-    }
-  });
-
-  // Function to toggle markers as favorites or remove them from favorites
+  // Functie om markers als favorieten in te stellen of ze uit favorieten te verwijderen
   const toggleFavorite = (item) => {
     if (favorites.some((fav) => fav.title === item.title)) {
-      // If already a favorite, remove it from favorites
+      // Als het al een favoriet is, verwijder het dan uit favorieten
       const updatedFavorites = favorites.filter(
         (fav) => fav.title !== item.title
       );
-
-      // Update the navigation parameter and state for favorites
+      setFavorites(updatedFavorites);
       navigation.navigate(translatedText.favorites, {
         favorites: updatedFavorites,
       });
-      setFavorites(updatedFavorites.length > 0 ? updatedFavorites : []);
+      // Werk de navigatieparameter en de staat voor favorieten bij
     } else {
-      // If not a favorite, add it to favorites
-      setFavorites((currentFavorites) => [...currentFavorites, item]);
+      // Als het geen favoriet is, voeg het dan toe aan favorieten
+      const updatedFavorites = [...favorites, item];
+      setFavorites(updatedFavorites);
+      navigation.navigate(translatedText.favorites, {
+        favorites: updatedFavorites,
+      });
     }
   };
 
-  // Function to check if an item is a favorite
+  // Functie om te controleren of een item een favoriet is
   const isFavorite = (item) =>
     favorites.some((fav) => fav.title === item.title);
 
-  // Function to render each item in the FlatList
+  // Functie om elk item in de FlatList weer te geven
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
@@ -89,7 +85,7 @@ export default function List({
     </TouchableOpacity>
   );
 
-  // Set up an effect to update favorites in navigation params
+  // Zet een effect op om favorieten bij te werken in navigatieparameters
   useEffect(() => {
     navigation.setParams({ favorites });
   }, [favorites]);
@@ -101,7 +97,7 @@ export default function List({
   );
 }
 
-// Define styles for the components
+// Definieer stijlen voor de componenten
 const styles = StyleSheet.create({
   container: {
     flex: 1,

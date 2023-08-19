@@ -1,3 +1,4 @@
+// Importeer de nodige componenten van React en React Native
 import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
@@ -9,23 +10,23 @@ import {
   FlatList,
 } from "react-native";
 
-// Load language data from JSON files
+// Laad taalgegevens uit JSON-bestanden
 import en from "../locales/en.json";
 import nl from "../locales/nl.json";
 import es from "../locales/es.json";
 import de from "../locales/de.json";
 
+// Definieer de Settings-component die instellingen weergeeft
 export default function Settings({
-  theme,
-  setTheme,
-  language,
-  setLanguage,
-  navigation,
+  theme, // Huidige thema
+  setTheme, // Functie om thema te wijzigen
+  language, // Huidige taal
+  setLanguage, // Functie om taal te wijzigen
 }) {
-  // Variables
+  // Variabelen
   const [oppositeTheme, setOppositeTheme] = useState();
 
-  // When theme changes, change the opposite theme for the button
+  // Wanneer het thema verandert, verander het tegenovergestelde thema voor de knop
   useEffect(() => {
     if (theme === "dark") {
       setOppositeTheme("light");
@@ -34,7 +35,7 @@ export default function Settings({
     }
   }, [theme]);
 
-  // On button press, switch the theme
+  // Bij het indrukken van de knop, schakel het thema om
   function toggleSwitch(currentTheme) {
     if (currentTheme === "dark") {
       setTheme("light");
@@ -43,7 +44,7 @@ export default function Settings({
     }
   }
 
-  // Load translations based on selected language
+  // Laad vertalingen op basis van de geselecteerde taal
   const translations = {
     en,
     nl,
@@ -51,34 +52,40 @@ export default function Settings({
     de,
   };
 
-  const defaultLanguage = "en"; // Set your default language code here
+  const defaultLanguage = "en"; // Stel hier je standaard taalcode in
   const translatedText = translations[language || defaultLanguage];
 
+  // Functie om de taal te wijzigen
   function changeLanguage(newLanguage) {
-    console.log("Changing language to:", newLanguage);
+    console.log("Taal wordt gewijzigd naar:", newLanguage);
     if (setLanguage) {
       setLanguage(newLanguage);
     }
   }
+
   const languageFlags = [
     { code: "en", flag: "🇺🇸" },
     { code: "nl", flag: "🇳🇱" },
     { code: "es", flag: "🇪🇸" },
     { code: "de", flag: "🇩🇪" },
   ];
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+        {/* Knop om thema te veranderen */}
         <Button
           title={`${translatedText.changeThemeTo} ${translatedText[oppositeTheme]}`}
           onPress={() => toggleSwitch(theme)}
         />
         <View style={styles.languageButtons}>
+          {/* Knoppen om taal te wijzigen */}
           {languageFlags.map((item) => (
             <TouchableOpacity
               key={item.code}
               onPress={() => changeLanguage(item.code)}
             >
+              {/* Vlag-emoji om taal aan te geven */}
               <Text style={styles.languageFlag}>{item.flag}</Text>
             </TouchableOpacity>
           ))}
@@ -88,15 +95,16 @@ export default function Settings({
   );
 }
 
+// Stijlen voor de component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "#F5F5F5", // Optional background color
+    // backgroundColor: "#F5F5F5", // Optionele achtergrondkleur
   },
   content: {
-    width: "80%", // Adjust as needed
+    width: "80%", // Pas aan indien nodig
   },
   title: {
     marginTop: 20,

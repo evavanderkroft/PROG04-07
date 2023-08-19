@@ -12,14 +12,14 @@ import {
 
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// Load language data from JSON files
+// Laad taalgegevens uit JSON-bestanden
 import en from "../locales/en.json";
 import nl from "../locales/nl.json";
 import es from "../locales/es.json";
 import de from "../locales/de.json";
 
 export default function Review({ markers, theme, language }) {
-  //globals
+  // Globale variabelen
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([]);
@@ -38,23 +38,25 @@ export default function Review({ markers, theme, language }) {
 
   const translatedText = translations[language];
 
-  //when page loads, get everything from asyncstorage
+  // Wanneer de pagina laadt, haal alles op uit asyncstorage
   useEffect(() => {
     getData();
   }, []);
 
-  //when the markers are fetched from app.js, put info in the dropdown
+  // Wanneer de markers worden opgehaald van app.js, zet informatie in de dropdown
   useEffect(() => {
+    // Maak een lijst van labels en waarden voor de dropdown
     const titles = [];
     if (markers) {
       markers.map((marker) => {
         titles.push({ label: marker.title, value: marker.title });
       });
     }
+    // Zet de lijst in de dropdown
     setItems(titles);
   }, [markers]);
 
-  //rendering the flatlist
+  // Renderen van elk item in de flatlist
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.item}>
       <Text style={styles.title}>{item[0]}</Text>
@@ -62,45 +64,56 @@ export default function Review({ markers, theme, language }) {
     </TouchableOpacity>
   );
 
-  //saving info to asyncstorage
+  // Informatie opslaan in asyncstorage
   async function saveInfo(text, title) {
     try {
+      // Sla de tekst op onder de geselecteerde titel
       await AsyncStorage.setItem(title, text);
     } catch (err) {
       console.log(err);
     }
+    // Vernieuw de getoonde gegevens
     getData();
   }
 
-  //get everything from asyncstorage
+  // Alles ophalen uit asyncstorage
   async function getData() {
     try {
+      // Haal alle sleutels (titels) op uit asyncstorage
       const keys = await AsyncStorage.getAllKeys();
+      // Haal bijbehorende gegevens op voor elke sleutel (titel)
       const storedData = await AsyncStorage.multiGet(keys);
       if (storedData !== null) {
+        // Zet de opgehaalde gegevens in de staat voor weergave
         setData(storedData);
       } else {
-        setData(["No data to display"]);
+        // Als er geen gegevens zijn, toon een standaardbericht
+        setData(["Geen gegevens om weer te geven"]);
       }
     } catch (err) {
       console.log(err);
     }
   }
 
-  //function to wipe all async storage
+  // Functie om alle asyncstorage te wissen
   async function clearAsyncStorage() {
+    // Wis alle opgeslagen gegevens in asyncstorage
     await AsyncStorage.clear();
+    // Vernieuw de getoonde gegevens
     getData();
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Weergave van de titel voor het scherm */}
       <Text style={[styles.titleReview, titleTextColor]}>
         {translatedText.reviewTitle}
       </Text>
+      {/* Weergave van de inleiding voor recensies */}
       <Text style={[styles.headlineReview, headlineTextColor]}>
         {translatedText.reviewBody}
       </Text>
+      {/* Dropdown voor het selecteren van een marker */}
       <DropDownPicker
         open={open}
         value={value}
@@ -111,6 +124,7 @@ export default function Review({ markers, theme, language }) {
         placeholder={translatedText.selectAnItem}
         style={styles.dropdown}
       />
+      {/* Tekstinvoerveld voor het invoeren van een recensie */}
       <TextInput
         multiline
         numberOfLines={3}
@@ -118,12 +132,15 @@ export default function Review({ markers, theme, language }) {
         onChangeText={onChangeText}
         value={text}
       />
+      {/* Weergave van opgeslagen recensies in een lijst */}
       <FlatList data={data} renderItem={renderItem} />
+      {/* Knop om de huidige recensie op te slaan */}
       <Button
         title={translatedText.saveReview}
         onPress={() => saveInfo(text, value)}
         style={styles.button}
       />
+      {/* Knop om alle opgeslagen recensies te verwijderen */}
       <Button
         title={translatedText.deleteReviews}
         onPress={() => clearAsyncStorage()}
@@ -133,6 +150,7 @@ export default function Review({ markers, theme, language }) {
   );
 }
 
+// Stijlen voor de componenten
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -184,8 +202,9 @@ const styles = StyleSheet.create({
   },
 
   darkBodyText: {
-    color: "black", // Define your dark theme body text color here
+    color: "black",
   },
+
   lightBodyText: {
     color: "white", // Define your light theme body text color here
   },

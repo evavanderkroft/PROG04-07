@@ -1,23 +1,23 @@
-// Import necessary components from React and React Native
+// Importeer de nodige componenten van React en React Native
 import React, { useEffect } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-// Define the Map component responsible for displaying a map and markers
+// Definieer de Map-component die verantwoordelijk is voor het weergeven van een kaart en markers
 export default function Map({ location, markers, route }) {
-  // Create a reference for the MapView
+  // Maak een referentie voor MapView
   const mapView = React.createRef();
 
-  // Set up an effect to handle changing the map region based on location or currentMarker
+  // Zet een effect op om de kaartregio te wijzigen op basis van locatie of huidige marker
   useEffect(() => {
-    // Log route parameters or absence of parameters
+    // Log routeparameters of afwezigheid van parameters
     if (route.params) {
       console.log(route.params);
     } else {
-      console.log("no params");
+      console.log("geen parameters");
     }
 
-    // Change the map region based on currentMarker or location
+    // Wijzig de kaartregio op basis van huidige marker of locatie
     if (route.params?.currentMarker) {
       changeRegion(route.params?.currentMarker);
     } else if (location && location.coords) {
@@ -25,7 +25,7 @@ export default function Map({ location, markers, route }) {
     }
   }, [route.params?.currentMarker, location]);
 
-  // Function to animate the map to a specific region
+  // Functie om de kaart naar een specifieke regio te animeren
   function changeRegion(loc) {
     if (loc && loc.coords) {
       mapView.current.animateToRegion(
@@ -41,9 +41,9 @@ export default function Map({ location, markers, route }) {
   }
 
   return (
-    // Render the Map component layout
+    // Render de lay-out van de Map-component
     <View style={styles.container}>
-      {/* Display the MapView with initial region and various map features */}
+      {/* Toon MapView met initiële regio en diverse kaartfuncties */}
       <MapView
         style={styles.map}
         initialRegion={{
@@ -58,7 +58,7 @@ export default function Map({ location, markers, route }) {
         showsCompass={true}
         showsTraffic={true}
       >
-        {/* Render markers on the map */}
+        {/* Toon markers op de kaart */}
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -72,7 +72,7 @@ export default function Map({ location, markers, route }) {
   );
 }
 
-// Define styles for the components
+// Definieer stijlen voor de componenten
 const styles = StyleSheet.create({
   container: {
     flex: 1,
