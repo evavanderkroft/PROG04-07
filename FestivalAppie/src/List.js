@@ -10,12 +10,33 @@ import {
   Button,
 } from "react-native";
 
+// Load language data from JSON files
+import en from "../locales/en.json";
+import nl from "../locales/nl.json";
+import es from "../locales/es.json";
+import de from "../locales/de.json";
+
 // Define the List component that displays a list of markers
-export default function List({ markers, navigation, favorites, setFavorites }) {
+export default function List({
+  markers,
+  navigation,
+  favorites,
+  setFavorites,
+  language,
+}) {
+  const translations = {
+    en,
+    nl,
+    es,
+    de,
+  };
+
+  const translatedText = translations[language];
+
   // Set up an effect to navigate to the Favorites screen when favorites change
   useEffect(() => {
     if (favorites.length > 0) {
-      navigation.navigate("Favorites", { favorites });
+      navigation.navigate(translatedText.favorites, { favorites });
     }
   });
 
@@ -28,7 +49,9 @@ export default function List({ markers, navigation, favorites, setFavorites }) {
       );
 
       // Update the navigation parameter and state for favorites
-      navigation.navigate("Favorites", { favorites: updatedFavorites });
+      navigation.navigate(translatedText.favorites, {
+        favorites: updatedFavorites,
+      });
       setFavorites(updatedFavorites.length > 0 ? updatedFavorites : []);
     } else {
       // If not a favorite, add it to favorites
@@ -43,16 +66,26 @@ export default function List({ markers, navigation, favorites, setFavorites }) {
   // Function to render each item in the FlatList
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Map", { currentMarker: item })}
+      onPress={() =>
+        navigation.navigate(translatedText.map, { currentMarker: item })
+      }
       style={styles.item}
     >
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.bodyText}>{item.description}</Text>
-      <Button
-        title={isFavorite(item) ? "Remove from Favorites" : "Add to Favorites"}
-        color={isFavorite(item) ? "red" : "green"}
+      <TouchableOpacity
+        style={[
+          styles.buttonFavorites,
+          { backgroundColor: isFavorite(item) ? "red" : "green" },
+        ]}
         onPress={() => toggleFavorite(item)}
-      />
+      >
+        <Text style={styles.buttonText}>
+          {isFavorite(item)
+            ? translatedText.removeFromFavorites
+            : translatedText.addToFavorites}
+        </Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 
@@ -63,7 +96,6 @@ export default function List({ markers, navigation, favorites, setFavorites }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Render a FlatList with the provided markers */}
       <FlatList data={markers} renderItem={renderItem} />
     </SafeAreaView>
   );
@@ -94,6 +126,14 @@ const styles = StyleSheet.create({
     fontFamily: "Gill Sans",
   },
   buttonFavorites: {
-    backgroundColor: "#FFFFFF",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    fontFamily: "Gill Sans",
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

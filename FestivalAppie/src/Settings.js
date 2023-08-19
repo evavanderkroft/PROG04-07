@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Button, Text } from "react-native";
-// import { useTranslation } from "react-i18next"; // Import useTranslation
+import {
+  SafeAreaView,
+  StyleSheet,
+  Button,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 
-export default function Settings({ theme, setTheme }) {
-  // const { t, i18n } = useTranslation(); // Initialize useTranslation
+// Load language data from JSON files
+import en from "../locales/en.json";
+import nl from "../locales/nl.json";
+import es from "../locales/es.json";
+import de from "../locales/de.json";
 
+export default function Settings({
+  theme,
+  setTheme,
+  language,
+  setLanguage,
+  navigation,
+}) {
   // Variables
   const [oppositeTheme, setOppositeTheme] = useState();
 
@@ -26,39 +43,47 @@ export default function Settings({ theme, setTheme }) {
     }
   }
 
-  // // Function to change the app's language
-  // const changeLanguage = (language) => {
-  //   i18n.changeLanguage(language);
-  // };
+  // Load translations based on selected language
+  const translations = {
+    en,
+    nl,
+    es,
+    de,
+  };
 
-  const textColor = theme === "dark" ? styles.lightText : styles.darkText;
+  const defaultLanguage = "en"; // Set your default language code here
+  const translatedText = translations[language || defaultLanguage];
 
-  // return (
-  //   <SafeAreaView style={styles.container}>
-  //     <Button
-  //       title={`Change theme to ${oppositeTheme}`}
-  //       onPress={() => toggleSwitch(theme)}
-  //     />
-  //     {/* <Text style={styles.title}>Select Language:</Text>
-  //     <Button
-  //       title={t("english")}
-  //       onPress={() => changeLanguage("en")}
-  //       disabled={i18n.language === "en"}
-  //     />
-  //     <Button
-  //       title={t("dutch")}
-  //       onPress={() => changeLanguage("nl")}
-  //       disabled={i18n.language === "nl"}
-  //     /> */}
-  //   </SafeAreaView>
-  // );
+  function changeLanguage(newLanguage) {
+    console.log("Changing language to:", newLanguage);
+    if (setLanguage) {
+      setLanguage(newLanguage);
+    }
+  }
+  const languageFlags = [
+    { code: "en", flag: "🇺🇸" },
+    { code: "nl", flag: "🇳🇱" },
+    { code: "es", flag: "🇪🇸" },
+    { code: "de", flag: "🇩🇪" },
+  ];
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, textColor]}>Settings</Text>
-      <Button
-        title={`Change theme to ${oppositeTheme}`}
-        onPress={() => toggleSwitch(theme)}
-      />
+      <View style={styles.content}>
+        <Button
+          title={`${translatedText.changeThemeTo} ${translatedText[oppositeTheme]}`}
+          onPress={() => toggleSwitch(theme)}
+        />
+        <View style={styles.languageButtons}>
+          {languageFlags.map((item) => (
+            <TouchableOpacity
+              key={item.code}
+              onPress={() => changeLanguage(item.code)}
+            >
+              <Text style={styles.languageFlag}>{item.flag}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -68,15 +93,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    fontFamily: "Gill Sans",
+    // backgroundColor: "#F5F5F5", // Optional background color
+  },
+  content: {
+    width: "80%", // Adjust as needed
   },
   title: {
     marginTop: 20,
   },
-  darkText: {
-    color: "black", // Define your dark theme text color here
+  languageButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
   },
-  lightText: {
-    color: "#9147FF", // Define your light theme text color here
+  languageFlag: {
+    fontSize: 30,
+    marginHorizontal: 10,
   },
 });

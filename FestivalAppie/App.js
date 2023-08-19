@@ -1,150 +1,3 @@
-// import * as Location from "expo-location";
-// import { useEffect, useState } from "react";
-// import {
-//   NavigationContainer,
-//   DefaultTheme,
-//   DarkTheme,
-// } from "@react-navigation/native";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// // import { I18nextProvider, useTranslation } from "react-i18next";
-// // import i18next from "i18next";
-// // import HttpApi from "i18next-http-backend";
-
-// import Home from "./src/Home.js";
-// import Map from "./src/Map.js";
-// import List from "./src/List.js";
-// import Settings from "./src/Settings.js";
-// import Favorites from "./src/Favorites.js";
-
-// export default function App() {
-//   //Globals
-//   const [markers, setMarkers] = useState([]);
-//   const [location, setLocation] = useState(null);
-//   const [errorMsg, setErrorMsg] = useState(null);
-//   const [data, setData] = useState(null);
-//   const [theme, setTheme] = useState("light");
-//   const [favorites, setFavorites] = useState([]);
-//   const languages = ["en", "nl"]; // List of supported languages
-
-//   // const languageDetector = {
-//   //   type: "languageDetector",
-//   //   async: true,
-//   //   detect: async () => Localization.locale,
-//   //   init: () => {},
-//   //   cacheUserLanguage: () => {},
-//   // };
-
-//   // i18next
-//   //   .use(HttpApi)
-//   //   .use(languageDetector)
-//   //   .use(initReactI18next)
-//   //   .init({
-//   //     fallbackLng: "en",
-//   //     supportedLngs: languages,
-//   //     backend: {
-//   //       loadPath: "/locales/{{lng}}.json", // Path to your language files
-//   //     },
-//   //     react: {
-//   //       useSuspense: false,
-//   //     },
-//   //   });
-
-//   //when page loads, check if permission for location
-//   useEffect(() => {
-//     (async () => {
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status !== "granted") {
-//         setErrorMsg("Permission to access location was denied");
-//         return;
-//       }
-//       let location = await Location.getCurrentPositionAsync({});
-
-//       setLocation(location);
-//       getData();
-//     })();
-//   }, []);
-
-//   if (errorMsg) {
-//     alert(errorMsg);
-//   }
-
-//   //fetch data from API
-//   function getData() {
-//     fetch(`https://evavanderkroft.nl/festivalAppie/festivals.json`)
-//       .then((res) => res.json())
-//       .then((data) => {
-//         setData(data);
-//         initMarkers(data);
-//       })
-//       .catch((err) => console.log(err));
-//   }
-
-//   //convert into actually usefull syntax
-//   function initMarkers(data) {
-//     for (const single of data) {
-//       if (Array.isArray(single.genres)) {
-//         setMarkers((current) => [
-//           ...current,
-//           {
-//             title: single.name,
-//             coords: {
-//               longitude: 1 * single.adress.lon,
-//               latitude: 1 * single.adress.lat,
-//             },
-//             description: single.genres.join(", "),
-//             info: "",
-//           },
-//         ]);
-//       }
-//     }
-//   }
-
-//   //main navigation
-//   const Tab = createBottomTabNavigator();
-//   return (
-//     // <I18nextProvider i18n={i18next}>
-//     <NavigationContainer theme={theme === "dark" ? DarkTheme : DefaultTheme}>
-//       <Tab.Navigator>
-//         <Tab.Screen name="Home">
-//           {(props) => (
-//             <Home {...props} markers={markers} setMarkers={setMarkers} />
-//           )}
-//         </Tab.Screen>
-
-//         <Tab.Screen name="List">
-//           {(props) => (
-//             <List
-//               {...props}
-//               markers={markers}
-//               favorites={favorites}
-//               setFavorites={setFavorites}
-//             />
-//           )}
-//         </Tab.Screen>
-
-//         <Tab.Screen name="Favorites">
-//           {(props) => (
-//             <Favorites
-//               {...props}
-//               favorites={favorites}
-//               setFavorites={setFavorites}
-//             />
-//           )}
-//         </Tab.Screen>
-
-//         <Tab.Screen name="Map">
-//           {(props) => <Map {...props} location={location} markers={markers} />}
-//         </Tab.Screen>
-
-//         <Tab.Screen name="Settings">
-//           {(props) => <Settings {...props} theme={theme} setTheme={setTheme} />}
-//         </Tab.Screen>
-//       </Tab.Navigator>
-//     </NavigationContainer>
-//     // </I18nextProvider>
-//   );
-// }
-
 // Import necessary libraries and components
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
@@ -154,6 +7,12 @@ import {
   DarkTheme,
 } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+// Load language data from JSON files
+import en from "./locales/en.json";
+import nl from "./locales/nl.json";
+import es from "./locales/es.json";
+import de from "./locales/de.json";
 
 // Import various app screens
 import Home from "./src/Home.js";
@@ -172,8 +31,16 @@ export default function App() {
   const [data, setData] = useState(null); // Data fetched from API
   const [theme, setTheme] = useState("light"); // App theme (light or dark)
   const [favorites, setFavorites] = useState([]); // Array of favorite markers
-  const languages = ["en", "nl"]; // List of supported languages
+  const [language, setLanguage] = useState("en"); // Initialize language state
+  // Load translations based on selected language
+  const translations = {
+    en,
+    nl,
+    es,
+    de,
+  };
 
+  const translatedText = translations[language];
   // Set up an effect to check for location permission and fetch initial data
   useEffect(() => {
     (async () => {
@@ -233,56 +100,72 @@ export default function App() {
     <NavigationContainer theme={theme === "dark" ? DarkTheme : DefaultTheme}>
       <Tab.Navigator>
         {/* Define screens for each tab */}
-        <Tab.Screen name="Home">
+        <Tab.Screen name={translatedText.home}>
           {(props) => (
             <Home
               {...props}
               markers={markers}
               setMarkers={setMarkers}
               theme={theme}
+              language={language}
+              setLanguage={setLanguage}
             />
           )}
         </Tab.Screen>
 
-        <Tab.Screen name="List">
+        <Tab.Screen name={translatedText.list}>
           {(props) => (
             <List
               {...props}
               markers={markers}
               favorites={favorites}
               setFavorites={setFavorites}
+              language={language}
+              setLanguage={setLanguage}
             />
           )}
         </Tab.Screen>
 
-        <Tab.Screen name="Favorites">
+        <Tab.Screen name={translatedText.favorites}>
           {(props) => (
             <Favorites
               {...props}
               favorites={favorites}
               setFavorites={setFavorites}
               theme={theme}
+              language={language}
+              setLanguage={setLanguage}
             />
           )}
         </Tab.Screen>
 
-        <Tab.Screen name="Map">
+        <Tab.Screen name={translatedText.map}>
           {(props) => <Map {...props} location={location} markers={markers} />}
         </Tab.Screen>
 
-        <Tab.Screen name="Review">
+        <Tab.Screen name={translatedText.review}>
           {(props) => (
             <Review
               {...props}
               markers={markers}
               setMarkers={setMarkers}
               theme={theme}
+              language={language}
+              setLanguage={setLanguage}
             />
           )}
         </Tab.Screen>
 
-        <Tab.Screen name="Settings">
-          {(props) => <Settings {...props} theme={theme} setTheme={setTheme} />}
+        <Tab.Screen name={translatedText.settings}>
+          {(props) => (
+            <Settings
+              {...props}
+              theme={theme}
+              setTheme={setTheme}
+              language={language}
+              setLanguage={setLanguage}
+            />
+          )}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

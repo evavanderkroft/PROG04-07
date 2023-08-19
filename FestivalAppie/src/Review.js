@@ -12,8 +12,13 @@ import {
 
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// Load language data from JSON files
+import en from "../locales/en.json";
+import nl from "../locales/nl.json";
+import es from "../locales/es.json";
+import de from "../locales/de.json";
 
-export default function Review({ markers, theme }) {
+export default function Review({ markers, theme, language }) {
   //globals
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -24,6 +29,14 @@ export default function Review({ markers, theme }) {
     theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
   const headlineTextColor =
     theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
+  const translations = {
+    en,
+    nl,
+    es,
+    de,
+  };
+
+  const translatedText = translations[language];
 
   //when page loads, get everything from asyncstorage
   useEffect(() => {
@@ -83,11 +96,10 @@ export default function Review({ markers, theme }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.titleReview, titleTextColor]}>
-        Review your festival
+        {translatedText.reviewTitle}
       </Text>
       <Text style={[styles.headlineReview, headlineTextColor]}>
-        if you want to review a festival so you can remember what you thought of
-        it, you can do it here!
+        {translatedText.reviewBody}
       </Text>
       <DropDownPicker
         open={open}
@@ -96,6 +108,7 @@ export default function Review({ markers, theme }) {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
+        placeholder={translatedText.selectAnItem}
         style={styles.dropdown}
       />
       <TextInput
@@ -107,12 +120,12 @@ export default function Review({ markers, theme }) {
       />
       <FlatList data={data} renderItem={renderItem} />
       <Button
-        title="Save the review"
+        title={translatedText.saveReview}
         onPress={() => saveInfo(text, value)}
         style={styles.button}
       />
       <Button
-        title="delete all reviews"
+        title={translatedText.deleteReviews}
         onPress={() => clearAsyncStorage()}
         style={styles.button}
       />
@@ -134,7 +147,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   inputText: {
-    // height: 40,
     margin: 12,
     borderWidth: 1,
     textAlign: "center",
@@ -164,7 +176,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   titleReview: {
-    // color: "#FFFFFF",
     margin: 10,
     fontSize: 35,
     fontFamily: "Cochin",

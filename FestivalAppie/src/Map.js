@@ -59,9 +59,9 @@ export default function Map({ location, markers, route }) {
         showsTraffic={true}
       >
         {/* Render markers on the map */}
-        {markers.map((marker) => (
+        {markers.map((marker, index) => (
           <Marker
-            key={marker.title}
+            key={index}
             coordinate={marker.coords}
             title={marker.title}
             description={marker.description}

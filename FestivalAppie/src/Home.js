@@ -1,17 +1,30 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Home({ theme }) {
+// Load language data from JSON files
+import en from "../locales/en.json";
+import nl from "../locales/nl.json";
+import es from "../locales/es.json";
+import de from "../locales/de.json";
+
+export default function Home({ theme, language }) {
+  // Load translations based on selected language
+  const translations = {
+    en,
+    nl,
+    es,
+    de,
+  };
+
+  const translatedText = translations[language];
   const bodyTextColor =
     theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.titleText]}>FestivalAppie</Text>
+      <Text style={[styles.titleText]}>{translatedText.welcome}</Text>
       <Text style={[styles.bodyText, bodyTextColor]}>
-        Welkom bij de app om je toekomstige EDM festivals op te bekijken. Op
-        deze app kun je zowel op de kaart kijken waar de festivals zich
-        bevinden, als dat je het in een lijstweergave ziet.
+        {translatedText.description}
       </Text>
     </View>
   );
@@ -21,10 +34,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    // width: "90%",
+    justifyContent: "center",
   },
   titleText: {
+    textAlign: "center", // Center the text horizontally
+    textAlignVertical: "center", // Center the text vertically
     marginTop: 10,
-    fontSize: 45,
+    fontSize: 60,
     fontFamily: "Cochin",
     fontWeight: "bold",
     color: "#9147FF",

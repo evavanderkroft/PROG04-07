@@ -10,6 +10,12 @@ import {
   View,
 } from "react-native";
 
+// Load language data from JSON files
+import en from "../locales/en.json";
+import nl from "../locales/nl.json";
+import es from "../locales/es.json";
+import de from "../locales/de.json";
+
 // Define the Favorites component that displays a list of favorite markers
 export default function Favorites({
   favorites, // Array of favorite markers
@@ -17,10 +23,18 @@ export default function Favorites({
   route, // Route object containing navigation parameters
   navigation, // Navigation object to control screen navigation
   theme,
+  language,
 }) {
   // Check if there are any favorites
   const [hasFavorites, setHasFavorites] = useState(favorites.length > 0);
+  const translations = {
+    en,
+    nl,
+    es,
+    de,
+  };
 
+  const translatedText = translations[language];
   const bodyTextColor =
     theme === "dark" ? styles.lightBodyText : styles.darkBodyText;
 
@@ -49,7 +63,9 @@ export default function Favorites({
   return (
     // Render the Favorites screen layout
     <SafeAreaView style={styles.container}>
-      <Text style={[styles.title, bodyTextColor]}>Favorite Markers</Text>
+      <Text style={[styles.title, bodyTextColor]}>
+        {translatedText.favoriteMarkers}
+      </Text>
       {hasFavorites ? (
         // Display the list of favorite markers
         <FlatList
@@ -58,7 +74,7 @@ export default function Favorites({
             // Make each favorite marker clickable to navigate to the map
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("Map", { currentMarker: item })
+                navigation.navigate(translatedText.map, { currentMarker: item })
               }
             >
               <View style={styles.item}>
@@ -69,7 +85,7 @@ export default function Favorites({
         />
       ) : (
         // Display a message when there are no favorite markers
-        <Text style={styles.NoFavsText}>No favorites</Text>
+        <Text style={styles.NoFavsText}>{translatedText.noFavorites}</Text>
       )}
     </SafeAreaView>
   );

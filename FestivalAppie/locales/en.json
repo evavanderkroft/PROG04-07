@@ -1,17 +1,28 @@
 {
-  "welcome": "Welcome to FestivalAppie",
-  "description": "Welcome to the app to view your upcoming EDM festivals...",
+  "title": "Settings en",
+  "welcome": "Welcome to FestiMap",
+  "description": "Discover, save, and review your favorite festivals worldwide with FestiMap – your passport to unforgettable music experiences. Explore the global festival map, bookmark events, and share your vibrant reviews, all in one app.",
   "favoriteMarkers": "Favorite Markers",
   "noFavorites": "You have no favorite markers",
   "selectLanguage": "Select Language",
+  "addToFavorites": "Add to Favorites",
+  "removeFromFavorites": "Remove from Favorites",
   "english": "English",
   "dutch": "Dutch",
   "spanish":"Spanish",
+  "german":"German",
   "home": "Home",
   "list": "List",
   "favorites": "Favorites",
   "map": "Map",
-  "settings": "Settings"
-
-  
+  "review":"Review",
+  "settings": "Settings",
+  "selectAnItem": "Select a festival",
+  "reviewTitle": "review your festival",
+  "reviewBody": "if you want to review a festival so you can remember what you though of it, you can do it here",
+  "saveReview": "Save the review",
+  "deleteReviews": "Delete all reviews",
+  "changeThemeTo": "Change theme to",
+  "dark": "dark",
+  "light": "light"
 }
