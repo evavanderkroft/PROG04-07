@@ -112,8 +112,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontFamily: "Gill Sans",
-    alignSelf: "center",
+    fontFamily: "Cochin",
+    fontWeight: "bold",
+    textAlign: "center",
     margin: 10,
     color: "#9147FF",
   },
